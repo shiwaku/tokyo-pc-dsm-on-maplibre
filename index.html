@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>東京都デジタルツインプロジェクト 点群DSMとグリッドDSMの比較</title>
+    <title>東京都デジタルツイン実現プロジェクト 点群DSMとグリッドDSMの比較</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--
@@ -58,13 +58,13 @@
         const map1 = new maplibregl.Map({
             container: 'map1',
             style: 'std.json',
-            zoom: 18.56,
+            zoom: 14.68,
             minZoom: 1,
             maxZoom: 23,
-            pitch: 48,
-            bearing: -34.4,
+            pitch: 54,
+            bearing: 0,
             maxPitch: 85,
-            center: [138.0816261, 35.0467647],
+            center: [139.76663, 35.68262],
             hash: true,
             attributionControl: false,
         })
@@ -90,11 +90,11 @@
                     new deck.Tile3DLayer({
                         id: "pc-3dtiles", // レイヤーIDを設定
                         data: "https://shiworks.xsrv.jp/3dtiles/toyko-23ku-pc/tokyo-station/tileset.json", // 3D TilesのURL
-                        opacity: 0.8, // レイヤーの不透明度を設定（1は完全に不透明）
-                        pointSize: 1, // 3次元点群データのポイントのサイズを設定
+                        opacity: 1, // レイヤーの不透明度を設定（1は完全に不透明）
+                        pointSize: 1.5, // 3次元点群データのポイントのサイズを設定
                         onTileLoad: (d) => {
                             const { content } = d;
-                            content.cartographicOrigin.z -= 3;
+                            content.cartographicOrigin.z -= 3.2;
                         },
                     }),
                 ],
@@ -106,13 +106,13 @@
         const map2 = new maplibregl.Map({
             container: 'map2',
             style: 'std.json',
-            zoom: 18.56,
+            zoom: 14.68,
             minZoom: 1,
             maxZoom: 23,
-            pitch: 48,
-            bearing: -34.4,
+            pitch: 54,
+            bearing: 0,
             maxPitch: 85,
-            center: [138.0816261, 35.0467647],
+            center: [139.76663, 35.68262],
             hash: true,
             attributionControl: false,
         });
@@ -167,6 +167,7 @@
             // DSMセット
             map2.setTerrain({ source: 'dsm', exaggeration: 1 });
 
+            /*
             // DSMラスターソース
             map2.addSource("dsm-raster", {
                 type: 'raster',
@@ -186,6 +187,16 @@
                 paint: {
                     'raster-opacity': 0.8
                 }
+            });
+            */
+
+            map2.addLayer({
+                'id': 'hillshading',
+                'source': 'dsm',
+                'type': 'hillshade',
+                paint: {
+                    "hillshade-shadow-color": "#473B24"
+                },
             });
 
         });
